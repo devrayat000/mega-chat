@@ -1,0 +1,12 @@
+{
+  "extends": "tsconfig/server.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "strict": false,
+    "strictNullChecks": false,
+    "moduleResolution": "node",
+    "importHelpers": true,
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
+}
