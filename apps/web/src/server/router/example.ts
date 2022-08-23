@@ -1,13 +1,13 @@
-import {Subscription} from '@trpc/server'
+import { Subscription } from "@trpc/server";
 import { z } from "zod";
-import { createRouter } from "./context";
+import { createRouter } from "./router";
 
 const greetSchema = z.object({
   name: z.string(),
   text: z.string(),
-})
+});
 
-type Greeting = z.infer<typeof greetSchema>
+type Greeting = z.infer<typeof greetSchema>;
 
 export const exampleRouter = createRouter()
   .query("hello", {
@@ -27,22 +27,23 @@ export const exampleRouter = createRouter()
       return await ctx.prisma.example.findMany();
     },
   })
-  .mutation('greet', {
+  .mutation("greet", {
     input: greetSchema,
-    resolve({ctx,input}) {
-      ctx.ee.emit('greeting', input)
+    resolve({ ctx, input }) {
+      ctx.ee.emit("greeting", input);
       return input;
-    }
-  }).subscription('onGreet', {
-    resolve({ctx}) {
-      return new Subscription<Greeting>(emit => {
+    },
+  })
+  .subscription("onGreet", {
+    resolve({ ctx }) {
+      return new Subscription<Greeting>((emit) => {
         function onGreet(greeting: Greeting) {
-          emit.data(greeting)
+          emit.data(greeting);
         }
-        ctx.ee.on('greeting', onGreet)
+        ctx.ee.on("greeting", onGreet);
         return () => {
-          ctx.ee.off('greeting', onGreet)
-        }
-      })
-    }
+          ctx.ee.off("greeting", onGreet);
+        };
+      });
+    },
   });

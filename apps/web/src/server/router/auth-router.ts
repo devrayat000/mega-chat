@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { compareHash, hashPassword } from "../../services/bcrypt";
-import { createRouter } from "./context";
+import { createRouter } from "./router";
+import { loginSchema } from "../../services/validators/login";
 
 export const registerSchema = z.object({
   name: z.string(),
@@ -10,13 +11,7 @@ export const registerSchema = z.object({
   image: z.string().url().nullish(),
 });
 
-export const loginSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8).max(32),
-});
-
 export type Register = z.infer<typeof registerSchema>;
-export type Login = z.infer<typeof loginSchema>;
 
 export const authRouter = createRouter()
   .mutation("register", {

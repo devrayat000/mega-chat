@@ -2,8 +2,8 @@
   "name": "nano-chat",
   "version": "0.1.0",
   "private": true,
-  "main": "src/server/router/index.ts",
-  "types": "src/server/router/index.ts",
+  "main": "src/server/router/export.ts",
+  "types": "src/server/router/export.ts",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

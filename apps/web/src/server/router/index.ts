@@ -1,10 +1,10 @@
 // src/server/router/index.ts
-import { createRouter } from "./context";
+import { createRouter } from "./router";
 import superjson from "superjson";
-
-import { exampleRouter } from "./example";
-// import { protectedExampleRouter } from "./protected-example-router";
 import { ZodError } from "zod";
+
+// import { protectedExampleRouter } from "./protected-example-router";
+import { exampleRouter } from "./example";
 import { authRouter } from "./auth-router";
 
 export const appRouter = createRouter()
@@ -28,4 +28,3 @@ export const appRouter = createRouter()
 export type AppRouter = typeof appRouter;
 
 // export { createContext } from "./context";
-export { createNodeContext as createContext } from "./context";

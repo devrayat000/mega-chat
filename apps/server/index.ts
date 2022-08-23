@@ -1,12 +1,8 @@
+import "./fetch";
 import ws from "ws";
 import { applyWSSHandler } from "@trpc/server/adapters/ws";
-import fetch from "node-fetch";
 
 import { appRouter, createContext } from "nano-chat";
-
-if (!global.fetch) {
-  (global.fetch as any) = fetch;
-}
 
 const wss = new ws.Server({
   port: process.env.PORT ? parseInt(process.env.PORT) : 3001,
