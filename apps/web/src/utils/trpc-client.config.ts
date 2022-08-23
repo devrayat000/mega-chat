@@ -2,7 +2,7 @@ import superjson from "superjson";
 import { createWSClient, wsLink } from "@trpc/client/links/wsLink";
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 // import { loggerLink } from "@trpc/client/links/loggerLink";
-import type { CreateTRPCClientOptions } from "@trpc/client";
+import { createTRPCClient, CreateTRPCClientOptions } from "@trpc/client";
 
 import type { AppRouter } from "../server/router";
 
@@ -43,3 +43,5 @@ export const trpcConfig: CreateTRPCClientOptions<AppRouter> = {
   ],
   transformer: superjson,
 };
+
+export const client = createTRPCClient<AppRouter>(trpcConfig);

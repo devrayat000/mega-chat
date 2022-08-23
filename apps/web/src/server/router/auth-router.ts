@@ -3,15 +3,7 @@ import { TRPCError } from "@trpc/server";
 import { compareHash, hashPassword } from "../../services/bcrypt";
 import { createRouter } from "./router";
 import { loginSchema } from "../../services/validators/login";
-
-export const registerSchema = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  password: z.string().min(8).max(32),
-  image: z.string().url().nullish(),
-});
-
-export type Register = z.infer<typeof registerSchema>;
+import { registerSchema } from "../../services/validators/register";
 
 export const authRouter = createRouter()
   .mutation("register", {

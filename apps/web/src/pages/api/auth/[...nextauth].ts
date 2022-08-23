@@ -1,15 +1,10 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { createTRPCClient } from "@trpc/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 // Prisma adapter for NextAuth, optional and can be removed
 import { prisma } from "../../../server/db/client";
-// import { env } from "../../../env/server.mjs";
-import type { AppRouter } from "../../../server/router";
-import { trpcConfig } from "../../../utils/trpc-client.config";
-
-const client = createTRPCClient<AppRouter>(trpcConfig);
+import { client } from "~/utils/trpc-client.config";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
