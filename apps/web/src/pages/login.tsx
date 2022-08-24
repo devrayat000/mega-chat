@@ -50,12 +50,7 @@ const LoginPage: NextPage<LoginPageProps> = ({ csrf }) => {
       </Title>
       <Text color="dimmed" size="sm" align="center" mt={5}>
         Do not have an account yet?{" "}
-        <Anchor
-          component={NextLink}
-          href="/signup"
-          size="sm"
-          onClick={(event) => event.preventDefault()}
-        >
+        <Anchor component={NextLink} href="/signup" size="sm">
           Create account
         </Anchor>
       </Text>

@@ -10,7 +10,10 @@ import {
   Checkbox,
   Button,
   Stepper,
+  useMantineTheme,
 } from "@mantine/core";
+import { IconUpload, IconPhoto, IconX } from "@tabler/icons";
+import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 import { useForm, zodResolver } from "@mantine/form";
 import { NextLink } from "@mantine/next";
 import {
@@ -20,18 +23,19 @@ import {
   type PageConfig,
 } from "next";
 import { getCsrfToken, signIn } from "next-auth/react";
-import useStepper from "~/hooks/stepper";
 
+import useStepper from "~/hooks/stepper";
 import { clientRegisterSchema } from "~/services/validators/register";
 import { trpc } from "~/utils/trpc";
 
 export const config: PageConfig = {
-  unstable_runtimeJS: false,
+  amp: "hybrid",
 };
 
 type LoginPageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 const LoginPage: NextPage<LoginPageProps> = ({ csrf }) => {
+  const theme = useMantineTheme();
   const { step, onStepChange } = useStepper(3);
   const { getInputProps, onSubmit } = useForm({
     initialValues: {
@@ -136,7 +140,59 @@ const LoginPage: NextPage<LoginPageProps> = ({ csrf }) => {
           </Container>
         </Stepper.Step>
         <Stepper.Step label="Second step" description="Verify email">
-          Step 2 content: Verify email
+          <Dropzone
+            onDrop={async (files) => {
+              const formData = new FormData();
+              formData.append("avatar", files[0]);
+              const res = await fetch("/api/auth/register", {
+                method: "POST",
+                body: formData,
+              });
+              const data = await res.json();
+              console.log(data);
+            }}
+            onReject={(files) => console.log("rejected files", files)}
+            maxSize={10 * 1024 ** 2}
+            accept={IMAGE_MIME_TYPE}
+          >
+            <Group
+              position="center"
+              spacing="xl"
+              style={{ minHeight: 220, pointerEvents: "none" }}
+            >
+              <Dropzone.Accept>
+                <IconUpload
+                  size={50}
+                  stroke={1.5}
+                  color={
+                    theme.colors[theme.primaryColor][
+                      theme.colorScheme === "dark" ? 4 : 6
+                    ]
+                  }
+                />
+              </Dropzone.Accept>
+              <Dropzone.Reject>
+                <IconX
+                  size={50}
+                  stroke={1.5}
+                  color={theme.colors.red[theme.colorScheme === "dark" ? 4 : 6]}
+                />
+              </Dropzone.Reject>
+              <Dropzone.Idle>
+                <IconPhoto size={50} stroke={1.5} />
+              </Dropzone.Idle>
+
+              <div>
+                <Text size="xl" inline>
+                  Drag images here or click to select files
+                </Text>
+                <Text size="sm" color="dimmed" inline mt={7}>
+                  Attach as many files as you like, each file should not exceed
+                  5mb
+                </Text>
+              </div>
+            </Group>
+          </Dropzone>
         </Stepper.Step>
         <Stepper.Step label="Final step" description="Get full access">
           Step 3 content: Get full access
